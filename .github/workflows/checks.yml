@@ -1,9 +1,5 @@
 # Github Actions config
 
-# Indica que es un archivo yml
-
----
-
 # Nombre que se mostrara en github actions
 name: Checks
 
