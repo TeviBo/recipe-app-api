@@ -1,0 +1,27 @@
+version: "3.9"
+
+# app : Es el servidor que correra nuestra app
+
+# build: construimos la imagen de docker en nuestro root directory, eso significan ambas reglas
+
+# port: mapeamos el puerto 8000 de nuestra maquina local con el puerto 8000 de la imagen del container
+
+# volumes: es una forma de mapear directorios a nuestro sistema mediante contenedores
+
+# En este caso mapeamos ./app de nuestro directorio con /app del container
+
+# La razon por la que se hace esto es para que se sincronize el directorio local con el del contenedor de manera de no tener que rebuildear la imagen frente a cambios en el codigo. Es como un nodemon
+
+# command: Especificamos el comando para runear el servidor
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"

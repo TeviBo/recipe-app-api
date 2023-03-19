@@ -1,0 +1,34 @@
+# Github Actions config
+
+# Indica que es un archivo yml
+
+---
+
+# Nombre que se mostrara en github actions
+name: Checks
+
+# Trigger le decimos que esta accion de github se ejecute al pushear
+on: [push]
+
+# Definimos un nuevo job llamado test-lint (esto se utilizara como id en scripts de deploy), le damos un nombre al job y seteamos el runner, el cual basicamente es un sistema operativo
+# steps: son las diferentes cosas que se ejecutaran en nuestro job
+
+# uses: permite utilizar acciones ya existentes de github actions, en este caso utilizamos la accion login de docker-hub y enviamos el username y password almacenados en los secretos del repositorio
+
+#checkout: provista por github, lo que nos permite es hacer "checkout" de nuestro codigo.
+jobs:
+  test-lint:
+    name: Test and Lint
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: {{ secrets.DOCKERHUB_USER }}
+          password: {{ secrets.DOCKERHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test
+        run: docker-compose run --rm app sh -c "python manage.py test"
+      - name: Lint
+        run: docker-compose run --rm app sh -c "flake8"

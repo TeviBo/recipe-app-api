@@ -1,0 +1,9 @@
+# Configuracion del linter
+# Toda config de flake8 tiene que comenzar con esto
+[flake8]
+
+exclude =
+    migrations,
+    __pycache__,
+    manage.py,
+    settings.py
