@@ -1,5 +1,3 @@
-version: "3.9"
-
 # app : Es el servidor que correra nuestra app
 
 # build: construimos la imagen de docker en nuestro root directory, eso significan ambas reglas
@@ -14,6 +12,7 @@ version: "3.9"
 
 # command: Especificamos el comando para runear el servidor
 
+version: "3.9"
 services:
   app:
     build:
@@ -25,3 +24,21 @@ services:
     volumes:
       - ./app:/app
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=bobbiesi796
+    depends_on:
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=bobbiesi796
+
+volumes:
+  dev-db-data:
