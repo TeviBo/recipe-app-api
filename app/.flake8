@@ -1,9 +1,16 @@
 # Configuracion del linter
 # Toda config de flake8 tiene que comenzar con esto
 [flake8]
-
+max-line-length = 88
 exclude =
     migrations,
     __pycache__,
     manage.py,
-    settings.py
+    settings.py,
+    .git
+ignore = E203, W503
+select = C,E,F,W,B,B950
+import-order-style = google
+inline-quotes = single
+multiline-quotes = double
+docstring-convention = numpy

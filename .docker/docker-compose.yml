@@ -16,13 +16,13 @@ version: "3.9"
 services:
   app:
     build:
-      context: .
+      context: ../
       args:
         - DEV=true
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ../app:/app
     command: >
       sh -c "python manage.py wait_for_db &&
             python manage.py migrate &&
