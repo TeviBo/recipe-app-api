@@ -25,7 +25,7 @@ class PublicUserApiTests(TestCase):
         self.client = APIClient()
 
     def test_create_user_success(self):
-        """Test creating a user is successfull."""
+        """Test creating a user is successful."""
         payload = {
             'email': 'test@example.com',
             'password': 'testpass123',
@@ -125,7 +125,7 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, {
             'name': self.user.name,
-            'password': self.user.password,
+            'email': self.user.email,
         })
 
     def post_me_not_allowed(self):
