@@ -6,6 +6,45 @@ Recipe API project
 
 ## Info
 
+### Github Actions (Jobs)
+
+Github actions son jobs que se ejecutan en un pipeline dependiendo de un trigger. Se escriben en yml como los archivos de docker
+
+```yml
+name: Checks
+
+on: [push]
+
+jobs:
+  test-lint:
+    name: Test and Lint
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Test
+        run: docker-compose run --rm app sh -c "python manage.py test"
+      - name: Lint
+        run: docker-compose run --rm app sh -c "flake8"
+```
+
+### Glosario
+
+- **name**: con esta regla le damos un nombre al job el cual se mostrara en la UI del repo.
+- **on**: con esta regla, especificamos el trigger que disparara nuestro job.
+- **jobs**: aqui especificamos todos los jobs que queremos en nuestro pipeline.
+  - **name**: idem que el name mencionado anteriormente, sirve para darle un nombre a nuestro job.
+  - **runs-on**: especificamos en que os se ejecutara nuestro job.
+  - **steps**: una lista con todos los pasos que se ejecutaran en nuestro job.
+    - **name**: mismo que lo anterior, declaramos un nombre para el paso.
+    - **uses**: permite utilizar acciones ya existentes de github actions, en este caso utilizamos la accion login de docker-hub y enviamos el username y password almacenados en los secretos del repositorio
+    - **with**: especificamos que argumentos utilizara dicho hook. En este caso le enviamos username y password los cuales establecimos como secretos en nuestro repositorio.
+
 ### Containers
 
 #### Dockerfile
@@ -159,7 +198,7 @@ DATABASES = {
 - python3-dev
 - libpq-dev
 
-### Paquetes equivalentes para la imagen Alpine de postgres
+#### Paquetes equivalentes para la imagen Alpine de postgres
 
 - postgresql-client
 - build-base

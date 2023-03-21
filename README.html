@@ -722,6 +722,47 @@ hue-6-2: #e6c07b
 <p>Recipe API project</p>
 <hr>
 <h2 id="info">Info</h2>
+<h3 id="github-actions-jobs">Github Actions (Jobs)</h3>
+<p>Github actions son jobs que se ejecutan en un pipeline dependiendo de un trigger. Se escriben en yml como los archivos de docker</p>
+<pre><code class="language-yml"><span class="hljs-attr">name:</span> <span class="hljs-string">Checks</span>
+
+<span class="hljs-attr">on:</span> [<span class="hljs-string">push</span>]
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">test-lint:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">Test</span> <span class="hljs-string">and</span> <span class="hljs-string">Lint</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-20.04</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Login</span> <span class="hljs-string">to</span> <span class="hljs-string">Docker</span> <span class="hljs-string">Hub</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/login-action@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.DOCKERHUB_USER</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">password:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.DOCKERHUB_TOKEN</span> <span class="hljs-string">}}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Test</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">docker-compose</span> <span class="hljs-string">run</span> <span class="hljs-string">--rm</span> <span class="hljs-string">app</span> <span class="hljs-string">sh</span> <span class="hljs-string">-c</span> <span class="hljs-string">&quot;python manage.py test&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Lint</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">docker-compose</span> <span class="hljs-string">run</span> <span class="hljs-string">--rm</span> <span class="hljs-string">app</span> <span class="hljs-string">sh</span> <span class="hljs-string">-c</span> <span class="hljs-string">&quot;flake8&quot;</span>
+</code></pre>
+<h3 id="glosario">Glosario</h3>
+<ul>
+<li><strong>name</strong>: con esta regla le damos un nombre al job el cual se mostrara en la UI del repo.</li>
+<li><strong>on</strong>: con esta regla, especificamos el trigger que disparara nuestro job.</li>
+<li><strong>jobs</strong>: aqui especificamos todos los jobs que queremos en nuestro pipeline.
+<ul>
+<li><strong>name</strong>: idem que el name mencionado anteriormente, sirve para darle un nombre a nuestro job.</li>
+<li><strong>runs-on</strong>: especificamos en que os se ejecutara nuestro job.</li>
+<li><strong>steps</strong>: una lista con todos los pasos que se ejecutaran en nuestro job.
+<ul>
+<li><strong>name</strong>: mismo que lo anterior, declaramos un nombre para el paso.</li>
+<li><strong>uses</strong>: permite utilizar acciones ya existentes de github actions, en este caso utilizamos la accion login de docker-hub y enviamos el username y password almacenados en los secretos del repositorio</li>
+<li><strong>with</strong>: especificamos que argumentos utilizara dicho hook. En este caso le enviamos username y password los cuales establecimos como secretos en nuestro repositorio.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="containers">Containers</h3>
 <h4 id="dockerfile">Dockerfile</h4>
 <p>En nuestro dockerfile especificamos toda la configuracion para la construccion de la imagen de nuestra app.</p>
@@ -860,7 +901,7 @@ Requiere dependencias adicionales instaladas en el os</p>
 <li>python3-dev</li>
 <li>libpq-dev</li>
 </ul>
-<h3 id="paquetes-equivalentes-para-la-imagen-alpine-de-postgres">Paquetes equivalentes para la imagen Alpine de postgres</h3>
+<h4 id="paquetes-equivalentes-para-la-imagen-alpine-de-postgres">Paquetes equivalentes para la imagen Alpine de postgres</h4>
 <ul>
 <li>postgresql-client</li>
 <li>build-base</li>
