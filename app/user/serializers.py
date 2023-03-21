@@ -6,7 +6,9 @@ Serializers for the user API View.
     transformarlas a objetos python para trabajar con ellas
 
     Clase Meta:
-        Es la clase que define el modulo, los campos y cualquier data adicional que se quiera enviar al serializer, el serializer debe saber cual modulo representa.
+        Es la clase que define el modulo, los campos y cualquier data adicional
+        que se quiera enviar al serializer, el serializer debe saber cual modulo
+        representa.
         model: es para definir el modelo que utilizara el serializer
         fields: son los campos que recibira el serializer, en formato json.
         extra_kwargs: es para setear reglas a los campos definidos arriba
