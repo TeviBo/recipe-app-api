@@ -23,8 +23,6 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         """Create and return a new superuser."""
-        if not email:
-            raise ValueError("Superuser must have an email address.")
         user = self.create_user(email, password)
         user.is_staff = True
         user.is_superuser = True
