@@ -1,0 +1,17 @@
+# Nos permite especificar una lista de archivos que van a estar excluidas del contexto de docker
+# Por lo cual, añadira al contexto todos los archivos que no sean especificados aca
+# Git
+.git
+.gitignore
+
+# Docker
+.docker
+
+# Python
+app/__pycache__/
+app/*/__pycache__/
+app/*/*/__pycache__/
+app/*/*/*/__pycache__/
+.env/
+.venv/
+venv/
